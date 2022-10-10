@@ -16,17 +16,20 @@ const SOURCE_IMG = [
    {img: 'https://i.imgur.com/T7YmwoZ.png', matched: false},
    {img: 'https://i.imgur.com/BECDpor.png', matched: false} 
 ];
-const BLOCK_FRONT = '';
+const BLOCK_FRONT = 'https://i.imgur.com/nCmw0M7.png';
 
   /*----- state variables -----*/
  let blocks; // Array of 30 block objects
  let firstBlock; // First block clicked or null
+ let ignoreClicks; 
+ let numBad;
 
   /*----- cached elements  -----*/
+  const msgEl = document.querySelector('h3')
 
 
   /*----- event listeners -----*/
-
+document.querySelector('main').addEventListener('click', handleClick);
 
   /*----- functions -----*/
   init();
@@ -34,26 +37,49 @@ const BLOCK_FRONT = '';
   function init() {
      blocks = getShuffledBlocks();
      firstBlock = null;
+     ignoreClicks = false;
+     numBad = 0;
      render();
   }
 
   function render() {
     blocks.forEach(function(block, idx) {
         const imgEl = document.getElementById(idx);
-        imgEl.src = block.img;
+        const src = (block.matched || block === firstBlock) ? block.img : BLOCK_FRONT;
+        imgEl.src = src; 
     });
+    msgEL .innerHTML = `Bad Count: ${numBad}`
   }
 
-  function getShuffledBlocks() {
+  function getShuffledBlocks() { 
     let tempBlocks = [];
     let blocks = [];
     for (let block of SOURCE_IMG) {
-        tempBlocks.push(block, block);
+        tempBlocks.push({...block}, {...block});
     }
     while (tempBlocks.length) {
         let rndIdx = Math.floor(Math.random() * tempBlocks.length); 
         let block = tempBlocks.splice(rndIdx, 1)[0];
         blocks.push(block);
     }
+    // Update all impacted state, then call render();
     return blocks;
+  }
+
+  function handleClick(evt) {
+    const blockIdx = parseInt(evt.target.id)
+    if (isNaN(blockIdx) || ignoreClicks) return;
+    const block = blocks[blockIdx];
+    if (firstBlock) {
+        if (firstBlock.img === block.img) {
+            // Correct match
+            firstBlock.matched = block.matched = true;
+    } else { 
+        numBad++;
+    }
+    firstBlock = null;     
+    } else {
+    firstBlock = block;
+    }
+    render();
   }
