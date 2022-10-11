@@ -1,5 +1,5 @@
  /*----- constants -----*/
-const SOURCE_IMG = [
+var SOURCE_IMG = [
    {img: 'https://i.imgur.com/Cz8SKDi.png',  matched: false},
    {img: 'https://i.imgur.com/lhQZmMe.png', matched: false},
    {img: 'https://i.imgur.com/iecci0K.png', matched: false},
@@ -22,14 +22,27 @@ const BLOCK_FRONT = 'https://i.imgur.com/KXDupDG.png';
  let blocks; // Array of 30 block objects
  let firstBlock; // First block clicked or null
  let ignoreClicks; 
- let numBad;
+ let movesCount;
+ 
+ 
 
   /*----- cached elements  -----*/
-  const msgEl = document.querySelector('h3')
+  const msgEl = document.querySelector('h3');
+  const stopButton = document.getElementById('stop')
+  const startButton = document.getElementById('start')
 
 
   /*----- event listeners -----*/
+startButton.addEventListener('click', () => {
+  movesCount = 0;
+  controls.classList.add('hide');
+  stopButton.classList.remove('hide');
+  startButton.classList.add('hide');
+  init();
+  render();
+});
 document.querySelector('main').addEventListener('click', handleClick);
+
 
   /*----- functions -----*/
   init();
@@ -38,7 +51,7 @@ document.querySelector('main').addEventListener('click', handleClick);
      blocks = getShuffledBlocks();
      firstBlock = null;
      ignoreClicks = false;
-     numBad = 0;
+     movesCount = 0;
      render();
   }
 
@@ -48,7 +61,7 @@ document.querySelector('main').addEventListener('click', handleClick);
         const src = (block.matched || block === firstBlock) ? block.img : BLOCK_FRONT;
         imgEl.src = src; 
     });
-    msgEL .innerHTML = `Bad Count: ${numBad}`
+    msgEl.innerHTML = `Moves: ${movesCount}`
   }
 
   function getShuffledBlocks() { 
@@ -75,7 +88,7 @@ document.querySelector('main').addEventListener('click', handleClick);
             // Correct match
             firstBlock.matched = block.matched = true;
     } else { 
-        numBad++;
+      movesCount++;
     }
     firstBlock = null;     
     } else {
@@ -83,3 +96,5 @@ document.querySelector('main').addEventListener('click', handleClick);
     }
     render();
   }
+  
+
