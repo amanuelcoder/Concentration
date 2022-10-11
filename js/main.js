@@ -28,8 +28,8 @@ const BLOCK_FRONT = 'https://i.imgur.com/KXDupDG.png';
 
   /*----- cached elements  -----*/
   const msgEl = document.querySelector('h3');
-  const stopButton = document.getElementById('stop')
-  const startButton = document.getElementById('start')
+  const stopButton = document.getElementById('stop');
+  const startButton = document.getElementById('start');
 
 
   /*----- event listeners -----*/
