@@ -17,7 +17,7 @@
     margin-top: 0;
     font-size: 5vw;
     color: transparent;
-    -webkit-text-stroke: 0.3vw #f2f8f4;
+    -webkit-text-stroke: 0.3vw #4259b6;
     text-decoration: underline;
   }
 
@@ -37,9 +37,10 @@
     margin-top: 5vmin;
     background: transparent;
     border-radius: 10vmin;
-    border-color: #00ad03;
-    color: #fafdfb;
+    border-color: #605b97;
+    color: #4259b6;
     font-size: 5vmin;
+    
   }
   
   video {
@@ -51,3 +52,7 @@
     min-height: 100%;
   }
   
+button:hover {
+    transform: scale(0.9);
+    transition: transform 200ms ease-in;
+}

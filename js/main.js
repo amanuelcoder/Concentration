@@ -16,7 +16,7 @@ const SOURCE_IMG = [
    {img: 'https://i.imgur.com/T7YmwoZ.png', matched: false},
    {img: 'https://i.imgur.com/BECDpor.png', matched: false} 
 ];
-const BLOCK_FRONT = 'https://i.imgur.com/nCmw0M7.png';
+const BLOCK_FRONT = 'https://i.imgur.com/KXDupDG.png';
 
   /*----- state variables -----*/
  let blocks; // Array of 30 block objects
