@@ -1,100 +1,164 @@
- /*----- constants -----*/
-var SOURCE_IMG = [
-   {img: 'https://i.imgur.com/Cz8SKDi.png',  matched: false},
-   {img: 'https://i.imgur.com/lhQZmMe.png', matched: false},
-   {img: 'https://i.imgur.com/iecci0K.png', matched: false},
-   {img: 'https://i.imgur.com/V1uwgDd.png', matched: false},
-   {img: 'https://i.imgur.com/78irYKj.png', matched: false},
-   {img: 'https://i.imgur.com/k2svK3c.png', matched: false},
-   {img: 'https://i.imgur.com/HBmjAdx.png', matched: false},
-   {img: 'https://i.imgur.com/GZBr9tL.png', matched: false},
-   {img: 'https://i.imgur.com/3mQpkjX.png', matched: false},
-   {img: 'https://i.imgur.com/K7VgXhy.png', matched: false},
-   {img: 'https://i.imgur.com/KPxR1ZA.png', matched: false},
-   {img: 'https://i.imgur.com/Ddr3lZ1.png', matched: false},
-   {img: 'https://i.imgur.com/TDNUZWT.png', matched: false},
-   {img: 'https://i.imgur.com/T7YmwoZ.png', matched: false},
-   {img: 'https://i.imgur.com/BECDpor.png', matched: false} 
+
+/*----- constants -----*/
+const SOURCE_IMG = [
+  {img: "https://i.imgur.com/L5LpA5f.png" },
+  {img: "https://i.imgur.com/cKcNCmO.png" },
+  {img: "https://i.imgur.com/LsT87wn.png" },
+  {img: "https://i.imgur.com/hDgSiPs.png" },
+  {img: "https://i.imgur.com/rXT3tfP.png" },
+  {img: "https://i.imgur.com/BhPM4sB.png" },
+  {img: "https://i.imgur.com/f6ps5Tc.png" },
+  {img: "https://i.imgur.com/xMZcWrW.png" },
+  {img: "https://i.imgur.com/9Xub6nf.png" },
+  {img: "https://i.imgur.com/M0jfOtA.png" },
+  {img: "https://i.imgur.com/4cAWcdc.png" },
+  {img: "https://i.imgur.com/Lac3HMo.png" },
 ];
-const BLOCK_FRONT = 'https://i.imgur.com/KXDupDG.png';
 
-  /*----- state variables -----*/
- let blocks; // Array of 30 block objects
- let firstBlock; // First block clicked or null
- let ignoreClicks; 
- let movesCount;
- 
- 
+/*----- cached elements  -----*/
+const gameContainer = document.querySelector(".grid");
+const time = document.getElementById("time");
+const moves = document.getElementById("moves");
+const startButton = document.getElementById("start");
+const stopButton = document.getElementById("stop");
+const controls = document.querySelector(".controls");
+const result = document.getElementById("result");
 
-  /*----- cached elements  -----*/
-  const msgEl = document.querySelector('h3');
-  const stopButton = document.getElementById('stop');
-  const startButton = document.getElementById('start');
+/*----- state variables -----*/
+let blocks;
+let interval;
+let firstBlock = false;
+let secondBlock = false;
 
+//Initial Time
+let seconds = 0, minutes = 0;
 
-  /*----- event listeners -----*/
-startButton.addEventListener('click', () => {
-  movesCount = 0;
-  controls.classList.add('hide');
-  stopButton.classList.remove('hide');
-  startButton.classList.add('hide');
-  init();
-  render();
-});
-document.querySelector('main').addEventListener('click', handleClick);
+//Initial moves and win count
+let movesCount = 0, winCount = 0;
 
-
-  /*----- functions -----*/
-  init();
-  // Initialize all state, then call render();
-  function init() {
-     blocks = getShuffledBlocks();
-     firstBlock = null;
-     ignoreClicks = false;
-     movesCount = 0;
-     render();
+//For timer
+function timeGenerator() {
+    seconds += 1;
+if (seconds >= 60) {
+    minutes += 1;
+    seconds = 0;
   }
 
-  function render() {
-    blocks.forEach(function(block, idx) {
-        const imgEl = document.getElementById(idx);
-        const src = (block.matched || block === firstBlock) ? block.img : BLOCK_FRONT;
-        imgEl.src = src; 
+//Time 
+  let secondsValue = seconds < 10 ? `0${seconds}` : seconds;
+  let minutesValue = minutes < 10 ? `0${minutes}` : minutes;
+  time.innerHTML = `<span>Time:</span>${minutesValue}:${secondsValue}`;
+  time.style.color = 'white';
+};
+
+//Move count
+function movesCounter() {
+  movesCount += 1;
+  moves.innerHTML = `<span>Moves:</span>${movesCount}`;
+}
+
+//random block 
+function rndBlock(size = 4)  {
+  let tempArray = [...SOURCE_IMG];
+  let blockValues = [];
+  size = (size * size) / 2;
+  for (let i = 0; i < size; i++) {
+    const randomIndex = Math.floor(Math.random() * tempArray.length);
+    blockValues.push(tempArray[randomIndex]);
+    tempArray.splice(randomIndex, 1);
+  }
+  return blockValues;
+}
+
+function getShuffledBlocks(blockValues, size = 4) {
+  gameContainer.innerHTML = "";
+  blockValues = [...blockValues, ...blockValues];
+  //simple shuffle
+  blockValues.sort(() => Math.random() - 0.5);
+  for (let i = 0; i < size * size; i++) {
+    gameContainer.innerHTML += `
+     <div class="block-container" data-block-value="${blockValues[i].img}">
+        <div class="block-before"></div>
+        <div class="block-after">
+        <img src="${blockValues[i].img}" class="image"/></div>
+        </div>`;
+  }
+
+  //Grid
+  gameContainer.style.gridTemplateColumns = `repeat(${size},auto)`;
+  //blocks
+  blocks = document.querySelectorAll(".block-container");
+  blocks.forEach((block) => {
+    block.addEventListener("click", () => {
+      if (!block.classList.contains("matched")) {
+        block.classList.add("flipped");
+        if (!firstBlock) {
+          firstBlock = block;
+          firstBlockValue = block.getAttribute("data-block-value");
+        } else {
+          movesCounter();
+          secondBlock = block;
+          let secondBlockValue = block.getAttribute("data-block-value");
+          if (firstBlockValue == secondBlockValue) {
+            firstBlock.classList.add("matched");
+            secondBlock.classList.add("matched");
+            firstBlock = false;
+            winCount += 1;
+            if (winCount == Math.floor(blockValues.length / 2)) {
+              result.innerHTML = `<h2>You Won!!</h2>
+            <h4>Moves: ${movesCount}</h4>`;
+              stopGame();
+            }
+          } else {
+            //if the blocks don't match flip the blocks back to normal
+            let [tempFirst, tempSecond] = [firstBlock, secondBlock];
+            firstBlock = false;
+            secondBlock = false;
+            let delay = setTimeout(() => {
+              tempFirst.classList.remove("flipped");
+              tempSecond.classList.remove("flipped");
+            }, 900);
+          }
+        }
+      }
     });
-    msgEl.innerHTML = `Moves: ${movesCount}`
-  }
+  });
+};
 
-  function getShuffledBlocks() { 
-    let tempBlocks = [];
-    let blocks = [];
-    for (let block of SOURCE_IMG) {
-        tempBlocks.push({...block}, {...block});
-    }
-    while (tempBlocks.length) {
-        let rndIdx = Math.floor(Math.random() * tempBlocks.length); 
-        let block = tempBlocks.splice(rndIdx, 1)[0];
-        blocks.push(block);
-    }
-    // Update all impacted state, then call render();
-    return blocks;
-  }
+//Start game
+startButton.addEventListener("click", function() {
+  movesCount = 0;
+  seconds = 0;
+  minutes = 0;
+//controls buttons visibility
+  controls.classList.add("hide");
+  stopButton.classList.remove("hide");
+  startButton.classList.add("hide");
+//Start timer
+  interval = setInterval(timeGenerator, 1000);
+//initial moves
+  moves.innerHTML = `<span>Moves:</span> ${movesCount}`;
+  moves.style.color = 'white';
+  init();
+});
 
-  function handleClick(evt) {
-    const blockIdx = parseInt(evt.target.id)
-    if (isNaN(blockIdx) || ignoreClicks) return;
-    const block = blocks[blockIdx];
-    if (firstBlock) {
-        if (firstBlock.img === block.img) {
-            // Correct match
-            firstBlock.matched = block.matched = true;
-    } else { 
-      movesCount++;
-    }
-    firstBlock = null;     
-    } else {
-    firstBlock = block;
-    }
-    render();
-  }
-  
+//Stop game
+stopButton.addEventListener("click",(function stopGame() {
+    controls.classList.remove("hide");
+    stopButton.classList.add("hide");
+    startButton.classList.remove("hide");
+    clearInterval(interval);
+  })
+);
+
+
+//Initialize values and func calls
+function init() {
+  result.innerText = "";
+  winCount = 0;
+  let blockValues = rndBlock();
+  console.log(blockValues);
+  getShuffledBlocks(blockValues);
+};
+
 
