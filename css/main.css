@@ -2,18 +2,19 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: sans-serif;
 }
 
 
 .main {
   box-sizing: content-box;
   width: 26.87em;
-  padding: 3em 3em;
+  padding: 1em 1em;
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
+  margin-top: 6em;
 }
 
 .grid {
@@ -53,7 +54,9 @@
 }
 
 .block-before {
-  background-image: url(https://i.imgur.com/nCmw0M7.png);
+  z-index: -1;
+  background: rgb(0, 0, 0, 0.3);
+
   font-size: 2.8em;
   font-weight: 600;
 }
@@ -127,10 +130,10 @@ video {
     min-height: 100%;
   }
 
-h3 {
-  text-align: center;
-  margin-top: .5em;
-  font-size: 40px;
-  color: rgb(138, 154, 148);
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0%
+  width: 25;
 }
-
