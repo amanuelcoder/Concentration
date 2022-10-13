@@ -48,13 +48,13 @@ if (seconds >= 60) {
   let secondsValue = seconds < 10 ? `0${seconds}` : seconds;
   let minutesValue = minutes < 10 ? `0${minutes}` : minutes;
   time.innerHTML = `<span>Time:</span>${minutesValue}:${secondsValue}`;
-  time.style.color = 'white';
 };
 
 //Move count
 function movesCounter() {
   movesCount += 1;
   moves.innerHTML = `<span>Moves:</span>${movesCount}`;
+
 }
 
 //random block 
@@ -138,12 +138,11 @@ startButton.addEventListener("click", function() {
   interval = setInterval(timeGenerator, 1000);
 //initial moves
   moves.innerHTML = `<span>Moves:</span> ${movesCount}`;
-  moves.style.color = 'white';
   init();
 });
 
 //Stop game
-stopButton.addEventListener("click",(function stopGame() {
+stopButton.addEventListener("click",(stopGame = () => {
     controls.classList.remove("hide");
     stopButton.classList.add("hide");
     startButton.classList.remove("hide");
@@ -151,13 +150,11 @@ stopButton.addEventListener("click",(function stopGame() {
   })
 );
 
-
 //Initialize values and func calls
 function init() {
   result.innerText = "";
   winCount = 0;
   let blockValues = rndBlock();
-  console.log(blockValues);
   getShuffledBlocks(blockValues);
 };
 
