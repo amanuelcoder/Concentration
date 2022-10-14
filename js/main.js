@@ -17,7 +17,6 @@ const SOURCE_IMG = [
 
 const Sound = new Audio('sound/sound.mp3');
 
-
 /*----- cached elements  -----*/
 const gameContainer = document.querySelector(".grid");
 const time = document.getElementById("time");
@@ -155,6 +154,7 @@ stopButton.addEventListener("click",(stopGame = () => {
 
 //Initialize values and func calls
 function init() {
+  Sound.play();
   result.innerText = "";
   winCount = 0;
   let blockValues = rndBlock();
