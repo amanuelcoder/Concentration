@@ -38,10 +38,9 @@
 
 
 ## Screenshots:
+<img src="https://i.imgur.com/Z1SunqB.png.">
+<img src="https://i.imgur.com/Z62BfOY.png.">
 
-https://i.imgur.com/Z1SunqB.png.
-
-https://i.imgur.com/Z62BfOY.png.
 
 
 ## Future enhancements
