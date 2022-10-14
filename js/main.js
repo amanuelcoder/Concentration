@@ -17,7 +17,6 @@ const SOURCE_IMG = [
 
 const Sound = new Audio('sound/sound.mp3');
 
-const sound = new Audio("sound/sound.mp3");
 
 /*----- cached elements  -----*/
 const gameContainer = document.querySelector(".grid");
