@@ -11,17 +11,18 @@
 7. if you match all blocks You Win!!!
 6. Click pause to pause the game
 8. Click on the play button to start a new game.
-9. Keep working on your concentration and memory skills to get your best time.
+9. Keep working on your concentration and memory skills to get your best time. 
 
 ## Technologies used:
 
 1. HTML
 2. CSS
 3. JS
-4. Adobe XD for wireframe 
+4. Adobe XD for wireframe
 
 
 ## Links used:
+
 ["https://i.imgur.com/L5LpA5f.png" ]
 ["https://i.imgur.com/Lac3HMo.png" ]
 ["https://i.imgur.com/cKcNCmO.png" ]
@@ -37,3 +38,24 @@
 
 
 ## Screenshots:
+
+https://i.imgur.com/Z1SunqB.png.
+
+https://i.imgur.com/Z62BfOY.png.
+
+
+## Future enhancements
+
+Add screen compatibility.
+Add difficulty levels.
+
+
+## Getting Started
+
+[Click to Play Connect Four!]
+
+(your deployment url here)
+
+
+
+
